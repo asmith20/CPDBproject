@@ -1,0 +1,6 @@
+SELECT ds.rank, 
+ to_char(
+ AVG(ds.salary), '99999999999999999D99')
+ AS average_salary
+FROM data_salary ds 
+GROUP BY ds.rank;

@@ -1,0 +1,7 @@
+SELECT dpu.unit_name,dpu.description, 
+to_char(AVG(ds.salary),'99999999999999999D99') AS average_salary
+FROM data_salary ds, data_officerhistory doh, data_policeunit dpu
+WHERE dpu.id=doh.unit_id AND doh.officer_id=ds.officer_id
+GROUP BY dpu.unit_name,dpu.description
+ORDER BY dpu.unit_name;
+

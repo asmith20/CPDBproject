@@ -1,0 +1,3 @@
+SELECT dof.id, dof.first_name, dof.last_name, da.incident_date, dof.resignation_date
+FROM data_officer dof, data_officerallegation doa, data_allegation da
+WHERE dof.resignation_date IS NOT NULL AND dof.id = doa.officer_id AND doa.allegation_id=da.id;
