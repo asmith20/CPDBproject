@@ -1,0 +1,7 @@
+
+SQL queries
+
+dates - find the time between resignation and the dates picked
+allegationsperDistrict - number of allegations per district
+salaryPerDistrict - amount made per district
+salaryPerRank - amount made at each rank
