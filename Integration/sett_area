@@ -4,4 +4,4 @@ FROM data_area da, settlement st
 WHERE da.area_type='community' AND ST_Intersects(ST_MakePoint(st.longitude,st.latitude)::geography,da.polygon)
 GROUP BY da.name, da.median_income
 ORDER BY settlement_total DESC)
-TO '/tmp/output.csv' CSV HEADER;
+TO '/tmp/settlements.csv' CSV HEADER;

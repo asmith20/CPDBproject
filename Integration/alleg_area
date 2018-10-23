@@ -4,4 +4,4 @@ FROM data_area da, data_allegation dal, settlement st
 WHERE da.area_type='community' AND ST_Intersects(dal.point,da.polygon) AND ST_Intersects(ST_MakePoint(st.longitude,st.latitude)::geography,da.polygon)
 GROUP BY da.name
 ORDER BY num_allegations DESC)
-TO '/tmp/output.csv' CSV HEADER;
+TO '/tmp/allegations.csv' CSV HEADER;
