@@ -15,56 +15,55 @@
 
 \begin{lstlisting}[frame=single]
 COPY(SELECT dpu.unit_name,dpu.description, 
-to_char(AVG(ds.salary),'99999999999999999D99') AS average_salary,
-to_char(STDDEV(ds.salary),'99999999999999999D99') AS std_salary
-FROM data_salary ds, data_officerhistory doh, data_policeunit dpu
-WHERE dpu.id=doh.unit_id AND doh.officer_id=ds.officer_id
+to_char(AVG(dsa.salary),'99999999999999999D99') AS average_salary,
+to_char(STDDEV(dsa.salary),'99999999999999999D99') AS std_salary
+FROM data_policeunit dpu, 
+(SELECT doh.unit_id, ds.salary FROM data_officerhistory doh, data_salary ds 
+WHERE doh.officer_id = ds.officer_id AND doh.end_date IS NULL AND ds.year = 2017) AS dsa
+WHERE dpu.id=dsa.unit_id
 GROUP BY dpu.unit_name,dpu.description
 ORDER BY dpu.unit_name)
 TO '/tmp/output.csv' CSV HEADER;
 \end{lstlisting}
-\begin{center} Output- there are a lot more rows we didn't include but are output by the query
-\end{center}
 \begin{table}[h]
 \centering
+\caption{Salary Table 2017(not all rows shown)}
 \begin{tabular}{|l|l|l|l|}
 \hline
 unit\_name & description                             & average\_salary & std\_salary \\
 \hline
-1          & District 001                            & 79064.02        & 17978.26    \\
-2          & District 002                            & 77256.34        & 15402.32    \\
-3          & District 003                            & 76162.29        & 16194.95    \\
-4          & District 004                            & 76735.87        & 16658.48    \\
-5          & District 005                            & 77075.2         & 16487.53    \\
-6          & District 006                            & 76741.03        & 16712.11    \\
-7          & District 007                            & 76400.79        & 16155.5     \\
-8          & District 008                            & 76959.9         & 15792.98    \\
-9          & District 009                            & 77530.3         & 15993.72    \\
-10         & District 010                            & 77545.42        & 16779.81    \\
-11         & District 011                            & 77907.7         & 17523.12    \\
-12         & District 012                            & 78320.26        & 16878.12    \\
-13         & District 013                            & 79438.15        & 17785.32    \\
-14         & District 014                            & 78479.82        & 16597.87    \\
-15         & District 015                            & 77536.95        & 16772.95    \\
-16         & District 016                            & 77774.94        & 15479.94    \\
-17         & District 017                            & 78412.75        & 16174.04    \\
-18         & District 018                            & 77907.07        & 16258.87    \\
-19         & District 019                            & 77020.29        & 15432.97    \\
-20         & District 020                            & 78697.35        & 17058.13    \\
-21         & District 021                            & 78697.72        & 16257.21    \\
-22         & District 022                            & 77499.63        & 14673.31    \\
-23         & District 023                            & 78217.89        & 15900       \\
-24         & District 024                            & 78099.61        & 16276.85    \\
-25         & District 025                            & 77315.81        & 16729.37    \\
-26         & Executive Officers Unit                 & 107119.46       & 35073.21    \\
-
-55         & Mounted Unit                            & 80333.32        & 15857.89   
+1          & District 001                                          & 93800.4         & 9305.97     \\
+2          & District 002                                          & 91693.62        & 10933.91    \\
+3          & District 003                                          & 88514.02        & 10068.22    \\
+4          & District 004                                          & 89908.49        & 10040.9     \\
+5          & District 005                                          & 90017.43        & 10677.43    \\
+6          & District 006                                          & 89490.69        & 10521.14    \\
+7          & District 007                                          & 88657.09        & 9464.79     \\
+8          & District 008                                          & 90738.19        & 9899.81     \\
+9          & District 009                                          & 91636.58        & 9850.67     \\
+10         & District 010                                          & 89877.26        & 10271.7     \\
+11         & District 011                                          & 88520.31        & 10069.87    \\
+12         & District 012                                          & 92953.5         & 8584.53     \\
+14         & District 014                                          & 92744.18        & 10674.98    \\
+15         & District 015                                          & 88710           & 10329.24    \\
+16         & District 016                                          & 94471.69        & 10731.43    \\
+17         & District 017                                          & 93950.43        & 10392.33    \\
+18         & District 018                                          & 92892.31        & 9675.62     \\
+19         & District 019                                          & 91314.05        & 9090.66     \\
+20         & District 020                                          & 94331.41        & 10008.83    \\
+22         & District 022                                          & 93824.06        & 10107.41    \\
+24         & District 024                                          & 92206.08        & 9863.78     \\
+25         & District 025                                          & 90558.67        & 10146.9     \\
+26         & Executive Officers Unit                               & 135621          & 1344.77     \\
+55         & Mounted Unit                                          & 98157.71        & 8565.4      \\
+341        & Canine Unit                                           & 99928           & 7519.92        
 \\
 \hline
 \end{tabular}
 \end{table}
 
-From the salary table, we can see that most districts are about the same. The average is roughly 77k, with some districts a bit higher and some lower. It would be interesting to compare to the civilian median income for each district. It is also interesting to look at the other units, i.e. the Mounted Unit or Bomb Squad. We had initially guessed that police officer pay would be higher in nicer neighborhoods, but for the most part it's the same across the board. This kind of makes logical sense, as having the pay higher in certain areas of the city would incentivize officers to move around. In this way, most neighborhoods would get officers of the same quality (for the most part). On some level we would almost expect officers to be paid more to police more 'dangerous' districts, but we also don't see this. I would be interested in learning why this isn't the case, but in some respects I imagine it might be a budget issue.
+We took only salaries from 2017 for officers currently in the service for the above table. From the table it generally looks like the average salaries hover around 90k, and there doesn't seem to be a significant difference between districts. It is interesting to look at some of the specialized units like the mounted of canine units and compare. Initially we had wondered whether officers would be paid more in nicer districts, possibly to cover the cost of living there, or whether they might be paid more in more dangerous districts. Neither seems to be the case, which makes sense assuming they all fall under one governing body, which they do. It would probably not be ideal to incentivize moving districts too often.
+
 
 \FloatBarrier
 \section{Allegations per District}

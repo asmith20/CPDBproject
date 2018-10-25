@@ -1,9 +1,10 @@
 COPY(SELECT dpu.unit_name,dpu.description, 
-to_char(AVG(ds.salary),'99999999999999999D99') AS average_salary,
-to_char(STDDEV(ds.salary),'99999999999999999D99') AS std_salary
-FROM data_salary ds, data_officerhistory doh, data_policeunit dpu
-WHERE dpu.id=doh.unit_id AND doh.officer_id=ds.officer_id
+to_char(AVG(dsa.salary),'99999999999999999D99') AS average_salary,
+to_char(STDDEV(dsa.salary),'99999999999999999D99') AS std_salary
+FROM data_policeunit dpu, 
+	(SELECT doh.unit_id, ds.salary FROM data_officerhistory doh, data_salary ds 
+	 WHERE doh.officer_id = ds.officer_id AND doh.end_date IS NULL AND ds.year = 2017) AS dsa
+WHERE dpu.id=dsa.unit_id
 GROUP BY dpu.unit_name,dpu.description
 ORDER BY dpu.unit_name)
 TO '/tmp/output.csv' CSV HEADER;
-
