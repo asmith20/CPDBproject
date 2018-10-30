@@ -16,7 +16,7 @@
 \subsection{Before Settlement}
 Note: We only consider officers who were eventually involved in a settlement of some sort here.
 
-Features are rank, race, gender, number of allegations, age at the time of settlement, and number of awards, respectively. For rank, the encoding is 1-12, generally in order of police hierarchy (1 being officer, 12 being superintendent). For gender, 1 is male, 2 female, and for race, 1 is white, 2 is hispanic, 3 black, 4 Asian, 5 Native American and 6 unknown.
+Features are rank, race, gender, number of allegations, age at the time of settlement, and number of awards, respectively. For rank, the encoding is 1-12, generally in order of police hierarchy (1 being officer, 12 being superintendent). For gender, 1 is male, 2 female, and for race, 1 is white, 2 is hispanic, 3 black, 4 Asian, 5 Native American and 6 unknown. To create the clusters we used k-means clustering. We used $k=6$ clusters for the before analysis and $k=4$ clusters for after, both based on the error plots (visible in the spark python notebook).
 
 
 \begin{figure}[h!]

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.10.16)  30 OCT 2018 10:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.10.16)  30 OCT 2018 10:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -232,6 +232,10 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 13.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 13.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 19.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 19.
 <cluster.png, id=1, 955.57pt x 870.25125pt>
 File: cluster.png Graphic file (type png)
  <use cluster.png>
@@ -244,7 +248,7 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<cluster2.png, id=11, 968.61874pt x 894.34125pt>
+<cluster2.png, id=12, 968.61874pt x 894.34125pt>
 File: cluster2.png Graphic file (type png)
  <use cluster2.png>
 Package pdftex.def Info: cluster2.png used on input line 45.
@@ -253,7 +257,7 @@ Package pdftex.def Info: cluster2.png used on input line 45.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[2 <./cluster.png (PNG copy)>] <settb.png, id=15, 773.89125pt x 549.05125pt>
+[2 <./cluster.png (PNG copy)>] <settb.png, id=16, 773.89125pt x 549.05125pt>
 File: settb.png Graphic file (type png)
 
 <use settb.png>
@@ -266,21 +270,22 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 [3 <./cluster2.png (PNG copy)>] [4 <./settb.png (PNG copy)>] (./workflow.aux) )
  
 Here is how much of TeX's memory you used:
- 3232 strings out of 494910
- 46874 string characters out of 6179835
+ 3234 strings out of 494910
+ 46902 string characters out of 6179835
  112418 words of memory out of 5000000
- 6502 multiletter control sequences out of 15000+600000
+ 6504 multiletter control sequences out of 15000+600000
  7587 words of font info for 27 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  38i,6n,32p,706b,222s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/
-share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/t
-exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on workflow.pdf (4 pages, 356681 bytes).
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
+Output written on workflow.pdf (4 pages, 364280 bytes).
 PDF statistics:
- 36 PDF objects out of 1000 (max. 8388607)
- 22 compressed objects within 1 object stream
+ 40 PDF objects out of 1000 (max. 8388607)
+ 25 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
