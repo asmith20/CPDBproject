@@ -1,4 +1,6 @@
-SELECT dof.id, dof.first_name, dof.last_name, da.incident_date, dof.resignation_date, 
-EXTRACT(day FROM dof.resignation_date - da.incident_date) AS days_between
+COPY(SELECT dof.id, dof.first_name, dof.last_name, da.incident_date, dof.resignation_date, 
+EXTRACT(day FROM COALESCE(dof.resignation_date,'2018-10-22') - da.incident_date) AS days_between
 FROM data_officer dof, data_officerallegation doa, data_allegation da
-WHERE dof.resignation_date IS NOT NULL AND dof.id = doa.officer_id AND doa.allegation_id=da.id;
+WHERE dof.id = doa.officer_id AND doa.allegation_id=da.id
+ORDER BY dof.id)
+TO '/tmp/output.csv' CSV HEADER;

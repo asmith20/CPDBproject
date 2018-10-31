@@ -1,0 +1,7 @@
+COPY(
+SELECT da.name, da.median_income, SUM(st.amount) AS settlement_total, AVG(regexp_replace(st.amount::money::text, '[$,]', '', 'g')::numeric) AS settlement_avg
+FROM data_area da, settlement st
+WHERE da.area_type='community' AND ST_Intersects(ST_MakePoint(st.longitude,st.latitude)::geography,da.polygon)
+GROUP BY da.name, da.median_income
+ORDER BY settlement_total DESC)
+TO '/tmp/settlements.csv' CSV HEADER;

@@ -1,5 +1,6 @@
-SELECT dpu.unit_name,dpu.description, COUNT(dia.allegation_id) AS number_of_allegations
+COPY(SELECT dpu.unit_name,dpu.description, COUNT(dia.allegation_id) AS number_of_allegations
 FROM data_policeunit dpu, data_investigatorallegation dia
 WHERE dpu.id=dia.current_unit_id
 GROUP BY dpu.unit_name,dpu.description
-ORDER BY number_of_allegations DESC;
+ORDER BY number_of_allegations DESC)
+TO '/tmp/output.csv' CSV HEADER;
