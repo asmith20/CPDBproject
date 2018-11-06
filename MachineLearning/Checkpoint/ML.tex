@@ -32,6 +32,14 @@ Looking at the result on test data, the predicted data distribution generally ma
 
 The results, as mentioned, generally match the actual settlement values. However it would probably be worth continuing to tinker with the model and other regression models to determine whether we have the best fit here. We'd also like to note that for the purposes of this analysis settlements with multiple officers are effectively counted more than once, as each officer will show up in the data. To fix this in the future we could scale the settlements (i.e. a \$10 million settlement with two officers would be split into \$5 million settlements), but that has it's own problems. We could also just combine the stats of the officers into one row, but that again would introduce some issues, so for now at least we left it as is.
 
+Looking at the error plot for the output test values, the model does well for smaller valued settlements but has problems with the larger settlements. This isn't unexpected, the larger values might be considered outliers and so don't fit in the model, but there are enough that I would be wary to exclude them.
+
+\begin{figure}[h]
+\centering
+\caption{Error on predicted values}
+\includegraphics[width=0.5\textwidth]{errplot.png}
+\end{figure}
+
 
 
 \end{document}
