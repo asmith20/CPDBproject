@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.10.16)  6 NOV 2018 12:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.10.16)  6 NOV 2018 17:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -232,25 +232,30 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 12.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 12.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 15.
 <predicted.png, id=1, 761.84625pt x 563.10374pt>
 File: predicted.png Graphic file (type png)
  <use predicted.png>
-Package pdftex.def Info: predicted.png used on input line 24.
+Package pdftex.def Info: predicted.png used on input line 28.
 (pdftex.def)             Requested size: 234.8775pt x 173.59802pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 <actual.png, id=2, 779.91376pt x 588.1975pt>
 File: actual.png Graphic file (type png)
  <use actual.png>
-Package pdftex.def Info: actual.png used on input line 29.
+Package pdftex.def Info: actual.png used on input line 33.
 (pdftex.def)             Requested size: 234.8775pt x 177.13374pt.
 
 <actual2.png, id=3, 740.7675pt x 557.08125pt>
 File: actual2.png Graphic file (type png)
  <use actual2.png>
-Package pdftex.def Info: actual2.png used on input line 30.
+Package pdftex.def Info: actual2.png used on input line 34.
 (pdftex.def)             Requested size: 234.8775pt x 176.62907pt.
 
-Overfull \hbox (2.43332pt too wide) in paragraph at lines 29--31
+Overfull \hbox (2.43332pt too wide) in paragraph at lines 33--35
 [][] [] 
  []
 
@@ -260,30 +265,34 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <errplot.png, id=4, 786.94pt x 595.22375pt>
 File: errplot.png Graphic file (type png)
  <use errplot.png>
-Package pdftex.def Info: errplot.png used on input line 40.
+Package pdftex.def Info: errplot.png used on input line 44.
 (pdftex.def)             Requested size: 234.8775pt x 177.65118pt.
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./predicted.png (PNG copy)
->] [2 <./actual.png (PNG copy)> <./actual2.png (PNG copy)> <./errplot.png (PNG 
-copy)>]
-(./ML.aux) ) 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[2 <./predicted.png (PNG copy)> <./actual.png (PNG copy)> <./actual2.png (PNG c
+opy)>] [3 <./errplot.png (PNG copy)>] (./ML.aux) ) 
 Here is how much of TeX's memory you used:
- 3240 strings out of 494910
- 46937 string characters out of 6179835
- 112447 words of memory out of 5000000
- 6509 multiletter control sequences out of 15000+600000
- 7580 words of font info for 27 fonts, out of 8000000 for 9000
+ 3243 strings out of 494910
+ 46991 string characters out of 6179835
+ 114447 words of memory out of 5000000
+ 6512 multiletter control sequences out of 15000+600000
+ 8196 words of font info for 29 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 38i,6n,32p,759b,228s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx1
-2.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><
-/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on ML.pdf (2 pages, 121580 bytes).
+ 38i,6n,32p,967b,228s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmsy10.pfb>
+Output written on ML.pdf (3 pages, 131864 bytes).
 PDF statistics:
- 31 PDF objects out of 1000 (max. 8388607)
- 18 compressed objects within 1 object stream
+ 38 PDF objects out of 1000 (max. 8388607)
+ 23 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
