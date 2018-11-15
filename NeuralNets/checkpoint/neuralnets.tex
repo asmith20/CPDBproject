@@ -37,25 +37,30 @@ cols = ['rank', 'gender', 'race',
        'numSettlements', 'sum_settlement_amount', 'numAwards']
 df = data[cols]
 
-#drop null valued rows
+#drop null rows
 df = df.dropna()
 
-#encode categorical values
-df['rank'] = df['rank'].astype('category')
-df['gender'] = df['gender'].astype('category')
-df['race'] = df['race'].astype('category')
-df['rank_cat'] = df['rank'].cat.codes
-df['gender_cat'] = df['gender'].cat.codes
-df['race_cat'] = df['race'].cat.codes
+#one hot encoding categorical variables
+df = pd.get_dummies(df,prefix=['rank','gender','race'],
+	columns=['rank','gender','race'])
 
 ucols = ['current_age', 'years_service', 'salary', 'numAllegations',
-       'numSettlements', 'sum_settlement_amount',
-       'numAwards','rank_cat','gender_cat','race_cat']
+       'numSettlements', 'sum_settlement_amount', 'numAwards', 'rank_Captain',
+       'rank_Chief', 'rank_Civilian', 'rank_Commander', 'rank_Deputy Chief',
+       'rank_Detective', 'rank_Field Training Officer', 'rank_Lieutenant',
+       'rank_Police Officer', 'rank_Sergeant', 'gender_F', 'gender_M',
+       'race_Asian/Pacific', 'race_Black', 'race_Hispanic',
+       'race_Native American/Alaskan Native', 'race_Unknown', 'race_White']
 
 df = df[ucols]
 
-col = ['current_age', 'years_service', 'numAllegations','numSettlements',
-	'sum_settlement_amount', 'numAwards','rank_cat','gender_cat','race_cat']
+col = ['current_age', 'years_service', 'numAllegations',
+       'numSettlements', 'sum_settlement_amount', 'numAwards', 'rank_Captain',
+       'rank_Chief', 'rank_Civilian', 'rank_Commander', 'rank_Deputy Chief',
+       'rank_Detective', 'rank_Field Training Officer', 'rank_Lieutenant',
+       'rank_Police Officer', 'rank_Sergeant', 'gender_F', 'gender_M',
+       'race_Asian/Pacific', 'race_Black', 'race_Hispanic',
+       'race_Native American/Alaskan Native', 'race_Unknown', 'race_White']
 X = df[col]
 y = df['salary']
 
@@ -64,13 +69,13 @@ mean = X.mean(axis=0)
 std = X.std(axis=0)
 X = (X - mean)/std
 
-#train-test split data
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.3)
 
-#create neural net model
+
 def build_model():
     model = keras.Sequential([
-        keras.layers.Dense(128,activation=tf.nn.relu,input_shape=(X_train.shape[1],)),
+        keras.layers.Dense(128,activation=tf.nn.relu,
+        			input_shape=(X_train.shape[1],)),
         keras.layers.Dense(64,activation=tf.nn.relu),
         keras.layers.Dense(32,activation=tf.nn.relu),
         keras.layers.Dense(1)
@@ -83,10 +88,10 @@ def build_model():
 model = build_model()
 model.summary()
 
-#store trained data stats and plot
+#store trained data stats 
 early_stop = keras.callbacks.EarlyStopping(monitor='val_loss', patience=20)
-history = model.fit(X_train, y_train, epochs=500, validation_split=0.3, 
- verbose=0, callbacks=[early_stop])
+history = model.fit(X_train, y_train, epochs=500, validation_split=0.2, 
+	verbose=0, callbacks=[early_stop])
 
 plt.gcf().clf()
 plt.figure()
@@ -99,7 +104,7 @@ plt.plot(history.epoch, np.array(history.history['val_mean_absolute_error']),
 plt.legend()
 plt.show()
 
-#predict test values and compare
+#predict salaries for test data
 pred = model.predict(X_test)
 
 x = np.linspace(50000,180000,10)
@@ -110,6 +115,8 @@ plt.ylabel('Predicted Salary')
 plt.axis('equal')
 plt.show()
 
+
+#plot error
 err = pred.flatten() - y_test
 plt.hist(err,bins=20)
 plt.xlabel('Salary Error')
@@ -118,6 +125,7 @@ plt.show()
 
 [loss, mae] = model.evaluate(X_test, y_test, verbose=0)
 print('Mean Absolute Error = ',mae)
+
 \end{lstlisting}
 
 \end{document}
