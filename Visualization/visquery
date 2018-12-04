@@ -1,0 +1,11 @@
+COPY(
+SELECT tab1.name, ST_AsText(da2.polygon) as geom, da2.median_income, tab1.population, tab1.num_allegations 
+FROM (SELECT da.name, t.population, COUNT(DISTINCT dal.crid) AS num_allegations
+FROM data_area da, data_allegation dal, (SELECT rp.area_id,SUM(rp.count) AS population FROM data_racepopulation rp GROUP BY rp.area_id) AS t
+WHERE da.area_type='community' AND ST_Intersects(dal.point,da.polygon) AND da.id=t.area_id
+GROUP BY da.name, t.population
+ORDER BY num_allegations DESC) AS tab1
+LEFT JOIN data_area da2 ON tab1.name=da2.name
+WHERE da2.area_type='community'
+)
+TO '/tmp/table.csv' CSV HEADER;
