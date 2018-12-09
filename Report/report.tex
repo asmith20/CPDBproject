@@ -1,0 +1,119 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[margin=1in]{geometry}
+\usepackage{placeins}
+\usepackage{float}
+\lstset{language=python}
+\usepackage{indentfirst}
+
+\author{Group 9: Kofi Otseidu, Manav Trivedi, Andrew Smith}
+\title{How Does Cost Affect Officer Behavior?}
+
+\begin{document}
+\maketitle
+
+
+\section{Introduction}
+Our goal in this project was to attempt to quantify the effect of cost, namely an officer's salary as well as settlement values, on officer behavior. Do settlements deter cops from getting into trouble? Does having a high or low salary make an officer more likely to get into trouble? Does the neighborhood wealth have an effect on officer behavior? These are some of the questions we wanted to get at with access to the Chicago Police Department's complaints database, as well as a database of settlements the police were involved in.
+
+Ultimately we cannot know what is in each individual officer's heart, but looking at the data can give us some idea of how to both prevent bad behavior in the first place, and also reward good officers most effectively. It also gives us insight into community interactions, particularly as Chicago has a diverse range of neighborhood wealth.
+
+
+\section{Description and Summarization}
+The first checkpoint that we worked on was Description and Summarization. Here we worked mainly on PostgreSQL. There were three questions that we wanted to answer through this checkpoint and we’ll go over them one at a time:
+
+The first question that we wanted to get some clarity about, was whether there is an anomaly in the average salary of the officers for each district in Chicago. We thought that if there is a difference in the salaries of the officers ranging from district to district, it could be a factor leading to their behavior and affect the number of allegations against them. What we found was that the average salaries of the officers around the city was almost the same. In 2017, the police officers in Chicago received a salary of around \$90k and there was no significant difference in this number between the districts. It is interesting to look at some of the specialized units like the mounted or canine units and compare to the base police officer salary. Initially we had wondered whether officers would be paid more in nicer districts, possibly to cover the cost of living there, or whether they might be paid more in more dangerous districts. Neither seems to be the case, which makes sense assuming they all fall under one governing body, which they do. It would probably not be ideal to incentivize moving districts too often.
+
+The second question was to summarize the allegations per district in Chicago and find out which were the areas that had the maximum number of allegations or interactions with the police. The result showed that a few districts, namely the Loop and Austin, have quite a bit more allegations than the other districts. The Loop is an extremely busy area for both tourists and commuters heading to work, leading to lots of police interactions. The next few districts are in rougher neighborhoods, where again we’d expect to see more police actions and thus more complaints. These are also majority minority neighborhoods, so it’s possible this plays a part in the high number of complaints.
+
+Then, we looked into finding a relation between the date of complaint and the resignation date of the officers. The dates provides some interesting information, but without some more analysis it’s hard to draw any conclusions. Some officers continue for years after getting complaints, some resign soon. To improve upon this we would probably make a table with the date of the first complaint, last complaint, resignation date, days between each, and also number of complaints each. From there we might be able to glean more information about the correlation.
+
+We created some plots to look into some of these relations. In these cases we replaced the resignation date with today’s date for empty values. The first plot showed the time in days between an allegation and resignation date for an officer. This includes all complaints, so for any officer that has multiple complaints, they’ll show up multiple times. The second and third are more refined, showing the time between the first complaint and last complaint, respectively. Note that the third plot includes the second plot for officers who only received one complaint. The second plot shows us that often an officer will resign shortly after their first complaint, however the third plot shows almost no relation between the dates. Cynically we would assume that it’s much easier to oust a junior officer, who would be getting their first complaint. On the other hand, officers receiving a lot of complaints are probably older and higher up in the police hierarchy and thus harder to fire altogether. It would also be helpful to look into the amount of time it takes for complaints to go through the database in general. 
+
+\begin{figure}[h!]
+\centering
+\caption{Date and Settlement Incident}
+\includegraphics[width=0.5\textwidth]{complaint1.png}
+\end{figure}
+
+\begin{figure}[h!]
+\includegraphics[width=0.5\textwidth]{complaint2.png}
+\includegraphics[width=0.5\textwidth]{complaint3.png}
+\end{figure}
+
+\FloatBarrier
+\section{Integration}
+
+
+\FloatBarrier
+\section{Workflow Analytics}
+
+In this section we used Spark to work with the database and create visualizations. The first task we tackled was to cluster officers before and after being involved in a settlement. We used features of rank, race, gender, age, number of complaints, and number of awards. The after clustering also used the number of settlements. The main takeaways here were that the most important features for clustering were age, number of complaints, and number of awards. Rank was also somewhat important, but it also is highly correlated with age and so somewhat redundant. Gender and race had little impact on the clusters. In the future it would be nice to have some way to map officers from before to after and so identify segments of the officer population that are more at risk of repeat offending versus those that behave well after a settlement.
+
+\begin{figure}[h!]
+\centering
+\caption{Clustering careers before and after settlement}
+\includegraphics[width=0.45\textwidth]{cluster.png}
+\includegraphics[width=0.45\textwidth]{cluster2.png}
+\end{figure}
+
+The second question that we looked into here was to quantify whether officers got fewer or more complaints after being involved in a settlement. The first plot on the left shows that officers involved in settlements do in fact get fewer complaints afterwards, averaging 10 before and 4 after. Conversely, these officers get more awards after the settlement, increasing from 19 before to 24 afterwards. If officers were being fired or assigned to desk duty after a settlement we expect they would most likely get fewer awards, so the combination of fewer complaints and more awards seems to imply that the officers affected are in fact changing their behavior for the better.
+
+\begin{figure}[h!]
+\caption{Number of Complaints and Awards After Settlement}
+\includegraphics[width=0.5\textwidth]{settb.png}
+\includegraphics[width=0.5\textwidth]{awards.png}
+\end{figure}
+
+The final topic we looked at was whether neighborhoods see fewer complaints after a settlement occurs. The data however, was a bit sparse here, and so we could not draw any definitive conclusions. We did see an overall 49\% decrease in complaints in the neighborhood that a settlement took place, perhaps indicating that overall happiness with the police increases or overall crime decreases.
+
+\FloatBarrier
+\section{Machine Learning}
+
+We continued to use Spark for this checkpoint, using its machine learning library to make predictions. The first prediction we attempted to make was to predict which officers would receive a complaint in a given year. We created a decision tree classifier with features of age, rank, race, and number of complaints prior to 2017. From there we attempted to predict who would receive a complaint in 2017. We got an accuaracy of 97\% which sounds good, but digging into the data revealed some problems. In 2017 there are approximately 11,000 active officers, of which only about 300 received a complaint. So the model mostly predicts 0 complaints, and only correctly predicts a few officers. It does however output some interesting probabilities, showing that the average officers has a 4\% chance of getting a complaint in a given year. This rate jumps to 20\% though for officers with 12 complaints. In the future it might work better to predict over an entire career instead of just a year.
+
+
+The second prediction we worked on was predicting settlement values. We used features of officer age, race, gender, number of complaints, number of settlements, and value of those settlements. We used a generalized linear model with a log-gaussian fit. The results are similar in distribution to the actual values, so the model preforms well. It does work much better with the smaller settlement values that the large ones, which is to be expected given that there aren't many large values in the data and so the model doesn't have much to work with.
+
+\begin{figure}[h]
+\caption{Predicted and Actual Settlement Values}
+\includegraphics[width=0.5\textwidth]{predicted.png}
+\includegraphics[width=0.5\textwidth]{actual2.png}
+\end{figure}
+
+\FloatBarrier
+\section{Neural Nets}
+
+
+\FloatBarrier
+\section{Visualization}
+
+Lastly, we visualized a couple of our hypothesis in Tableau and got a better understanding of our findings. The first thing that we looked into was the number of allegations per capita in the neighbourhoods of chicago. The allegations per capita is similar across the board, with a few neighborhoods standing out. First and foremost is Fuller Park, the only neighborhood in red in the first map, as it has almost as many complaints as residents (around 2,000). Excluding Fuller Park we can see that a few other neighborhoods have elevated complaint levels, namely the Loop and a few west and south side areas. The Loop has lots of traffic, and the other neighborhood are rougher areas, so it makes sense that they have more complaints per capita.
+
+\begin{figure}[h]
+\caption{Allegations per Capita (with and without Fuller Park)}
+\includegraphics[width=0.5\textwidth]{plot1.png}
+\includegraphics[width=0.5\textwidth]{plot2.png}
+\end{figure}
+
+Next, we plotted a relation between the median income in the neighbourhoods to the number of allegations in each of them. This plot is pretty similar to the number of settlements per neighborhood plot we made in an earlier checkpoint. There are a few outliers, the Loop and Austin, and presumably some spillover from the Loop in the Near West and Near North Side. Excluding those, it looks like generally, the number of complaints is inversely correlated with median income. There are some neighborhood with low incomes that also don’t report many complaints. It’s possible these neighborhoods don’t believe the police will help and are thus under reported, but it would be hard to prove this without further analysis. In addition, neighborhoods such as the Loop and Near West Side may over report for allegations for many things that may not really classify as allegation due to the nature of these wealthier areas. However more analysis on the types of analysis done would be required.
+
+
+\begin{figure}[h]
+\centering
+\caption{Neighborhood median income vs number of allegations}
+\includegraphics[width=0.75\textwidth]{scatter.png}
+\end{figure}
+
+The last visualization we created looks at the average cost of officers separated by their complaint quartiles. The cost is defined as each officer's salary plus any portion of a settlement they were involved in for that year. The first quartile consists of officer who have 2 complaints or less, with an average of 0.64 complaints. The second quartile is officer with 2 to 7 complaints, with an average of 4.94 complaints. The third quartile is officers with 7 to 15 complaints, with an average of 11, and the last quartile has up to 175 complaints, with 27.9 complaints per officer on average. Overall we can see that officers with more complaints generally cost the department more. The noticeable dip in the first quartile is most likely due to the hiring of a many new officers.
+
+\begin{figure}[h]
+\caption{Cost of Officers from 2002-2017}
+\includegraphics[width=\textwidth]{costline.png}
+\end{figure}
+
+\FloatBarrier
+\section{Conclusion}
+
+\end{document}
