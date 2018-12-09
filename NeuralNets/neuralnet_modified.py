@@ -23,17 +23,25 @@ df = df.dropna()
 #one hot encoding categorical variables
 df = pd.get_dummies(df,prefix=['rank','gender','race'],columns=['rank','gender','race'])
 
-ucols = ['current_age', 'years_service', 'salary', 'numAllegations',
+'''ucols = ['current_age', 'years_service', 'salary', 'numAllegations',
        'numSettlements', 'sum_settlement_amount', 'numAwards', 'gender_F', 'gender_M',
        'race_Asian/Pacific', 'race_Black', 'race_Hispanic',
-       'race_Native American/Alaskan Native', 'race_Unknown', 'race_White']
+       'race_Native American/Alaskan Native', 'race_Unknown', 'race_White']'''
+ucols = ['current_age', 'years_service', 'salary', 'numAllegations',
+       'numSettlements', 'sum_settlement_amount', 'numAwards', 'gender_F', 'gender_M',
+       ]
+
+
 
 df = df[ucols]
 
-col = ['current_age', 'years_service', 'numAllegations',
+'''col = ['current_age', 'years_service', 'numAllegations',
        'numSettlements', 'sum_settlement_amount', 'numAwards', 'gender_F', 'gender_M',
        'race_Asian/Pacific', 'race_Black', 'race_Hispanic',
-       'race_Native American/Alaskan Native', 'race_Unknown', 'race_White']
+       'race_Native American/Alaskan Native', 'race_Unknown', 'race_White']'''
+col = ['current_age', 'years_service', 'numAllegations',
+       'numSettlements', 'sum_settlement_amount', 'numAwards', 'gender_F', 'gender_M',
+       ]
 X = df[col]
 y = df['salary']
 
@@ -77,7 +85,7 @@ plt.plot(history.epoch, np.array(history.history['mean_absolute_error']),
 plt.plot(history.epoch, np.array(history.history['val_mean_absolute_error']),
        label = 'Val loss')
 plt.legend()
-plt.show()
+#plt.show()
 
 
 # In[3]:
@@ -92,7 +100,7 @@ plt.plot(x,x)
 plt.xlabel('Actual Salary')
 plt.ylabel('Predicted Salary')
 plt.axis('equal')
-plt.show()
+#plt.show()
 
 
 # In[4]:
@@ -102,7 +110,7 @@ err = pred.flatten() - y_test
 plt.hist(err,bins=20)
 plt.xlabel('Salary Error')
 plt.ylabel('Frequency')
-plt.show()
+#plt.show()
 
 
 # In[5]:
