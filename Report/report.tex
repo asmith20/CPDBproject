@@ -43,8 +43,42 @@ We created some plots to look into some of these relations. In these cases we re
 \end{figure}
 
 \FloatBarrier
-\section{Integration}
+\section{Data Integration}
 
+In this section we used Spark to work with the database and create visualizations. We need to use postgis for this query so we did not use trifacta. We joined the data area table to the settlement table based on whether the settlement lat/long falls within a community, then grouped by the community and summed the settlements. In order to add them however, we would need to go through each individual claim and see if we can determine a location based on the description, or go through the officers, which may not be accurate. It is a bit easier to see this data in plot form, so below are two plots. There isn't a clear distribution here. It looks like higher income neighborhoods have less settlements, which would make sense, as nicer neighborhoods generally have less crime. However it also appears some of the lowest income neighborhoods
+also have less settlements. It's possible that citizens in these neighborhoods are unable to afford a lawyer and as such do not go through with the process, but I'm not sure that that cost falls on them to begin with.
+
+\begin{figure}[h!]
+\centering
+\caption{Settle per Neighborhood}
+\includegraphics[width=0.45\textwidth]{settle1.png}
+\includegraphics[width=0.45\textwidth]{settle2.png}
+\end{figure}
+
+To start, we looked at the races of the officers and got some statistics for the settlement cost for each officer by joining the settlement information with a table with the settlement id. Using Trifacta we grouped the information by race of the officer. We could then create columns for each of the races. The averages listed are only for settlements less than a million. This was to get a better understanding of what occurs in the typical case of a settlement without any large outliers. The table of average settlement values is below (table 3). The average white officer settlement costs the department around 81k which is 10k more than any other race. I would guess that when a white officer is involved, the police might pay out slightly larger settlements to somewhat avoid the bad press behind any
+race-related issues. 
+
+\begin{figure}[h!]
+\centering
+\caption{Table of Settlement Costs}
+\includegraphics[width=0.85\textwidth]{RaceTable.PNG}
+\end{figure}
+
+The third question was to analyze officer age during the time of a settlement. Using Trifacta we were able to find out that this value was around 39.56 years old. For comparison, the average age of current officers in CPD is 44.5 years old, although we do expect younger officers are more likely to be in the field and thus be involved in complaints/settlements. Below is the average age by rank for current officers, showing that lower ranks tend to be younger. in settlements, so it does seem that younger officers in general are more likely to be involved in an incident.
+
+\begin{figure}[h!]
+\centering
+\caption{Officer Ages}
+\includegraphics[width=0.85\textwidth]{ages.png}
+\end{figure}
+
+Similar to the first question we used postgis to put the allegations and settlements into each neighborhood and counted them. For the most part, there seems to be a strong correlation between the two - as the number of allegations decreases, so does the number of settlements. There are quite a few inconsistencies however. Looking at the first few, the Loop stands out as having a lot of allegations and few settlements, while North Lawndale shows the opposite. The Loop is an interesting neighborhood in that it is extremely populated during the day with tourists and people going to work, but most do not actually live in the Loop. It might make sense that a person in the Loop would submit a complaint, but then maybe not stick around to follow through with court procedures. From the plot below, the Loop (bottom right) looks like it might be an outlier, but the rest of the neighborhoods do follow a roughly linear distribution.
+
+\begin{figure}[h!]
+\centering
+\caption{Allegations vs Settlements}
+\includegraphics[width=0.45\textwidth]{alleg_scatter.png}
+\end{figure}
 
 \FloatBarrier
 \section{Workflow Analytics}
@@ -71,7 +105,7 @@ The final topic we looked at was whether neighborhoods see fewer complaints afte
 \FloatBarrier
 \section{Machine Learning}
 
-We continued to use Spark for this checkpoint, using its machine learning library to make predictions. The first prediction we attempted to make was to predict which officers would receive a complaint in a given year. We created a decision tree classifier with features of age, rank, race, and number of complaints prior to 2017. From there we attempted to predict who would receive a complaint in 2017. We got an accuaracy of 97\% which sounds good, but digging into the data revealed some problems. In 2017 there are approximately 11,000 active officers, of which only about 300 received a complaint. So the model mostly predicts 0 complaints, and only correctly predicts a few officers. It does however output some interesting probabilities, showing that the average officers has a 4\% chance of getting a complaint in a given year. This rate jumps to 20\% though for officers with 12 complaints. In the future it might work better to predict over an entire career instead of just a year.
+We continued to use Spark for this checkpoint, using its machine learning library to make predictions. The first prediction we attempted to make was to predict which officers would receive a complaint in a given year. We created a decision tree classifier with features of age, rank, race, and number of complaints prior to 2017. From there we attempted to predict who would receive a complaint in 2017. We got an accuracy of 97\% which sounds good, but digging into the data revealed some problems. In 2017 there are approximately 11,000 active officers, of which only about 300 received a complaint. So the model mostly predicts 0 complaints, and only correctly predicts a few officers. It does however output some interesting probabilities, showing that the average officers has a 4\% chance of getting a complaint in a given year. This rate jumps to 20\% though for officers with 12 complaints. In the future it might work better to predict over an entire career instead of just a year.
 
 
 The second prediction we worked on was predicting settlement values. We used features of officer age, race, gender, number of complaints, number of settlements, and value of those settlements. We used a generalized linear model with a log-gaussian fit. The results are similar in distribution to the actual values, so the model preforms well. It does work much better with the smaller settlement values that the large ones, which is to be expected given that there aren't many large values in the data and so the model doesn't have much to work with.
@@ -85,11 +119,20 @@ The second prediction we worked on was predicting settlement values. We used fea
 \FloatBarrier
 \section{Neural Nets}
 
+We started by creating a table of officer data and salaries from 2017. We specifically only take one year, as including an officers previous years salary probably gives away the current salary, which would make the neural net mostly useless. One hot encoding is used for the categorical variables which worked better than simply inputing category codes. The neural net uses 3 hidden layers with ReLu activation. The test data has a mean absolute error of \$3350, which, for salaries roughly \$50k-180k, isn't bad. We tested a few different configurations but consistently got the best results with the above setup. Looking at the plot of actual vs predicted salaries, it seems to do pretty well with most sections of the spectrum of salaries and there are no clear mismatched areas.
+Certain features such as rank tend to be better predictors of salary
+When removing the rank of officers in predictor, mean squared error increase to \$5500. Other features alone do not significantly affect the performance. In the future, more tests can be done to help determine the optimal combination of features.
+
+\begin{figure}[h]
+\caption{Predicted and Actual Settlement Values}
+\includegraphics[width=0.5\textwidth]{pred.png}
+\includegraphics[width=0.5\textwidth]{error.png}
+\end{figure}
 
 \FloatBarrier
 \section{Visualization}
 
-Lastly, we visualized a couple of our hypothesis in Tableau and got a better understanding of our findings. The first thing that we looked into was the number of allegations per capita in the neighbourhoods of chicago. The allegations per capita is similar across the board, with a few neighborhoods standing out. First and foremost is Fuller Park, the only neighborhood in red in the first map, as it has almost as many complaints as residents (around 2,000). Excluding Fuller Park we can see that a few other neighborhoods have elevated complaint levels, namely the Loop and a few west and south side areas. The Loop has lots of traffic, and the other neighborhood are rougher areas, so it makes sense that they have more complaints per capita.
+Lastly, we visualized a couple of our hypothesis in Tableau and got a better understanding of our findings. The first thing that we looked into was the number of allegations per capita in the neighbourhoods of Chicago. The allegations per capita is similar across the board, with a few neighborhoods standing out. First and foremost is Fuller Park, the only neighborhood in red in the first map, as it has almost as many complaints as residents (around 2,000). Excluding Fuller Park we can see that a few other neighborhoods have elevated complaint levels, namely the Loop and a few west and south side areas. The Loop has lots of traffic, and the other neighborhood are rougher areas, so it makes sense that they have more complaints per capita.
 
 \begin{figure}[h]
 \caption{Allegations per Capita (with and without Fuller Park)}
@@ -115,5 +158,7 @@ The last visualization we created looks at the average cost of officers separate
 
 \FloatBarrier
 \section{Conclusion}
+
+For our project, we were able to make four conclusions. Our first conclusion is that officer salary is independent of neighborhood as officer salary varies mostly by rank as opposed to where they work. In our work, officer race is not a very strong predictor of the officers salary. In terms of officer behavior, officers that remain on the force after a settlement tend to have more awards and few allegations against them. Finally, after removing outliers the number of allegations is loosely inversely correlated with the average salary of the district. To strengthen this study in the future, analysis on the firings and suspensions should be looked into as these events do cost the Police force and may affect the total cost per officer.
 
 \end{document}
